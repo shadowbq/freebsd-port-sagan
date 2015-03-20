@@ -1,0 +1,2 @@
+bin/sagan
+@dir(root,wheel,750) /var/log/sagan
