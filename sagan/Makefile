@@ -10,7 +10,9 @@ COMMENT=	Sagan uses a 'Snort like' engine and rules to analyze logs
 
 LICENSE=	GPLv2
 
-LIB_DEPENDS=libdnet.so:${PORTSDIR}/net/libdnet \
+LIB_DEPENDS=liblognorm.so:${PORTSDIR}/devel/liblognorm \
+			libpcre.so:${PORTSDIR}/devel/pcre \
+			libdnet.so:${PORTSDIR}/net/libdnet \
 			libjson-c.so:${PORTSDIR}/devel/json-c \
 			libestr.so:${PORTSDIR}/devel/libestr
 
@@ -27,8 +29,8 @@ USE_AUTOTOOLS=	aclocal autoconf autoheader automake
 AUTOMAKE_ARGS=	--add-missing
 
 GNU_CONFIGURE=	yes
-CONFIGURE_ARGS=	--with-ldns-libraries=${PREFIX}/lib
-CONFIGURE_ARGS+= --with-ldns-includes=${PREFIX}/include
+CPPFLAGS+=	-I${LOCALBASE}/include
+LIBS+=		-L${LOCALBASE}/lib
 
 USE_RC_SUBR=	sagan
 
