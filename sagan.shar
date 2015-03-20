@@ -1,0 +1,175 @@
+# This is a shell archive.  Save it in a file, remove anything before
+# this line, and then unpack it by entering "sh file".  Note, it may
+# create directories; files and directories will be owned by you and
+# have default permissions.
+#
+# This archive contains:
+#
+#	sagan
+#	sagan/Makefile
+#	sagan/files
+#	sagan/files/pkg-message.in
+#	sagan/files/sagan.in
+#	sagan/files/patch-src_processors_sagan-cif.c
+#	sagan/pkg-descr
+#	sagan/pkg-plist
+#	sagan/distinfo
+#
+echo c - sagan
+mkdir -p sagan > /dev/null 2>&1
+echo x - sagan/Makefile
+sed 's/^X//' >sagan/Makefile << 'b56f1d469d3632db92241e71561bcbf5'
+X# $FreeBSD$
+X
+XPORTNAME=	sagan
+XDISTVERSION= ${GH_COMMIT}
+XCATEGORIES=	security
+XDISTFILES=	beave-sagan-1.0.0-RC5.tar.gz
+X
+XMAINTAINER=	shadowbq@gmail.com
+XCOMMENT=	Sagan uses a 'Snort like' engine and rules to analyze logs
+X
+XLICENSE=	GPLv2
+X
+XLIB_DEPENDS=liblognorm.so:${PORTSDIR}/devel/liblognorm \
+X			libpcre.so:${PORTSDIR}/devel/pcre \
+X			libdnet.so:${PORTSDIR}/net/libdnet \
+X			libjson-c.so:${PORTSDIR}/devel/json-c \
+X			libestr.so:${PORTSDIR}/devel/libestr
+X
+XUSE_GITHUB=	yes
+XGH_ACCOUNT=	beave
+XGH_PROJECT=	sagan
+XGH_TAG=		${GH_COMMIT}
+XGH_COMMIT=	5aef307
+X
+XSUB_FILES=	pkg-message
+X
+XUSES=		gmake libtool
+XUSE_AUTOTOOLS=	aclocal autoconf autoheader automake
+XAUTOMAKE_ARGS=	--add-missing
+X
+XLOGS_DIR=		/var/log/sagan
+X
+XGNU_CONFIGURE=	yes
+XCPPFLAGS+=	-I${LOCALBASE}/include
+XLIBS+=		-L${LOCALBASE}/lib
+X
+XUSE_RC_SUBR=	sagan
+X
+X.include <bsd.port.options.mk>
+X
+Xdo-install:
+X	${INSTALL_MAN} ${WRKDIR}/etc/sagan.8	${STAGEDIR}${PREFIX}/man/man8
+X	${INSTALL_PROGRAM} ${WRKSRC}/src/sagan ${STAGEDIR}${PREFIX}/bin
+X	${INSTALL_DATA} ${WRKSRC}/etc/sagan.conf ${STAGEDIR}${ETCDIR}/sagan.conf-sample
+X	${MKDIR} ${STAGEDIR}${LOGS_DIR}
+X
+X.include <bsd.port.mk>
+b56f1d469d3632db92241e71561bcbf5
+echo c - sagan/files
+mkdir -p sagan/files > /dev/null 2>&1
+echo x - sagan/files/pkg-message.in
+sed 's/^X//' >sagan/files/pkg-message.in << '55649454e525b46072c951e5c65b6dbb'
+X***********************************
+X* !!!!!!!!!!! WARNING !!!!!!!!!!! *
+X***********************************
+X
+XA startup script 'sagan' was installed in /usr/local/etc/rc.d/.  Enable
+Xthe script in /etc/rc.conf using the usual rc.subr syntax.  See rc.conf(5)
+Xor go to the FreeBSD Handbook - (http://goo.gl/9WboJZ)
+X
+XType "sagan -h" on the commandline for usage instructions.
+55649454e525b46072c951e5c65b6dbb
+echo x - sagan/files/sagan.in
+sed 's/^X//' >sagan/files/sagan.in << '1f6003c74818d418d25fde1859f93ea1'
+X#!/bin/sh
+X
+X# PROVIDE: sagan
+X# REQUIRE: DAEMON
+X# BEFORE: LOGIN
+X# KEYWORD: shutdown
+X
+X# Add the following lines to /etc/rc.conf to enable sagan:
+X# sagan_enable (bool):		Set to YES to enable sagan
+X# 				Default: NO
+X# sagan_flags (str):		Extra flags passed to sagan
+X#				Default: -D
+X# sagan_user (str):    Run Sagan as this user
+X#       Default: sagan
+X# sagan_conf (str):		sagan configuration file
+X#				Default: /usr/local/etc/sagan/sagan.conf
+X
+X. /etc/rc.subr
+X
+Xname="sagan"
+Xrcvar=sagan_enable
+Xextra_commands=reload
+X
+Xcommand="/usr/local/sbin/sagan"
+X
+Xload_rc_config $name
+X
+X[ -z "$sagan_enable" ]    && sagan_enable="NO"
+X[ -z "$sagan_conf" ]      && sagan_conf="/usr/local/etc/sagan.conf"
+X[ -z "$sagan_user" ]      && sagan_user="sagan"
+X[ -z "$sagan_flags" ]     && sagan_flags="-D -u $sagan_user"
+X                          
+X[ -n "$sagan_conf" ]      && sagan_flags="$sagan_flags -f $sagan_conf"
+X
+Xpidfile="/var/run/sagan/sagan.pid"
+X
+Xrun_rc_command "$1"
+X
+X
+1f6003c74818d418d25fde1859f93ea1
+echo x - sagan/files/patch-src_processors_sagan-cif.c
+sed 's/^X//' >sagan/files/patch-src_processors_sagan-cif.c << 'afc9ae6fbbd2a11958b67e19e5d98a40'
+X--- src/processors/sagan-cif.c.orig	2015-03-20 03:46:55 UTC
+X+++ src/processors/sagan-cif.c
+X@@ -41,7 +41,7 @@
+X #include <time.h>
+X #include <pthread.h>
+X #include <curl/curl.h>
+X-#include <json/json.h>
+X+#include <json.h>
+X 
+X #include "sagan.h"
+X #include "sagan-defs.h"
+afc9ae6fbbd2a11958b67e19e5d98a40
+echo x - sagan/pkg-descr
+sed 's/^X//' >sagan/pkg-descr << 'eb557add3b9643fd8df919a76a82a59f'
+XSagan uses a 'Snort like' engine and rules to analyze logs.
+X
+XSagan is an open source (GNU/GPLv2) high performance, real-time log
+Xanalysis & correlation engine.  It is written in C and uses a
+Xmulti-threaded architecture to deliver high performance log & event
+Xanalysis.
+X
+XThe Sagan structure and Sagan rules work similarly to the
+XSourcefire "Snort" IDS engine. This was intentionally done to maintain
+Xcompatibility with rule management software (oinkmaster/pulledpork/etc)
+Xand allows Sagan to correlate log events with your Snort IDS/IPS
+Xsystem. Since Sagan can write to Snort IDS/IPS databases via
+Xunified2/barnyard2, it is compatible with all Snort "consoles".
+XFor example, Sagan is compatible with Snorby [http://www.snorby.org],
+XSguil [http://sguil.sourceforge.net], BASE, and the Prelude IDS
+Xframework! (to name a few).
+X
+XFor more information, please visit the Sagan web site:
+XWWW: http://sagan.quadrantsec.com.
+eb557add3b9643fd8df919a76a82a59f
+echo x - sagan/pkg-plist
+sed 's/^X//' >sagan/pkg-plist << '199cf886b5505c9939cd43009eebc940'
+Xbin/sagan
+Xetc/sagan.conf-sample
+Xman/man8/sagan.8
+X@dir(root,wheel,750) /var/log/sagan
+199cf886b5505c9939cd43009eebc940
+echo x - sagan/distinfo
+sed 's/^X//' >sagan/distinfo << '860e81e0f201f15ded3a34ee19859117'
+XSHA256 (beave-sagan-1.0.0-RC5.tar.gz) = 887dd1951351a2e3b870cbd756dfb8a1cb37eae9359e4eac237ab99e8432c254
+XSIZE (beave-sagan-1.0.0-RC5.tar.gz) = 305412
+860e81e0f201f15ded3a34ee19859117
+exit
+
