@@ -28,6 +28,8 @@ USES=		gmake libtool
 USE_AUTOTOOLS=	aclocal autoconf autoheader automake
 AUTOMAKE_ARGS=	--add-missing
 
+LOGS_DIR=		/var/log/sagan
+
 GNU_CONFIGURE=	yes
 CPPFLAGS+=	-I${LOCALBASE}/include
 LIBS+=		-L${LOCALBASE}/lib
@@ -37,8 +39,9 @@ USE_RC_SUBR=	sagan
 .include <bsd.port.options.mk>
 
 do-install:
-	${INSTALL_PROGRAM} ${WRKSRC}/src/sagan \
-		${STAGEDIR}${PREFIX}/bin
-	${MKDIR} ${STAGEDIR}/var/log/sagan
+	${INSTALL_MAN} ${WRKDIR}/etc/sagan.8	${STAGEDIR}${PREFIX}/man/man8
+	${INSTALL_PROGRAM} ${WRKSRC}/src/sagan ${STAGEDIR}${PREFIX}/bin
+	${INSTALL_DATA} ${WRKSRC}/etc/sagan.conf ${STAGEDIR}${ETCDIR}/sagan.conf-sample
+	${MKDIR} ${STAGEDIR}${LOGS_DIR}
 
 .include <bsd.port.mk>
