@@ -41,6 +41,7 @@ USE_RC_SUBR=	sagan
 do-install:
 	${INSTALL_MAN} ${WRKSRC}/etc/sagan.8	${STAGEDIR}${PREFIX}/man/man8
 	${INSTALL_PROGRAM} ${WRKSRC}/src/sagan ${STAGEDIR}${PREFIX}/bin
+	${MKDIR} ${STAGEDIR}${ETCDIR}
 	${INSTALL_DATA} ${WRKSRC}/etc/sagan.conf ${STAGEDIR}${ETCDIR}/sagan.conf-sample
 	${MKDIR} ${STAGEDIR}${LOGS_DIR}
 

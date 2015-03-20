@@ -1,4 +1,4 @@
 bin/sagan
-etc/sagan.conf-sample
+etc/sagan/sagan.conf-sample
 man/man8/sagan.8
 @dir(root,wheel,750) /var/log/sagan
