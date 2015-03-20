@@ -60,7 +60,7 @@ X
 X.include <bsd.port.options.mk>
 X
 Xdo-install:
-X	${INSTALL_MAN} ${WRKDIR}/etc/sagan.8	${STAGEDIR}${PREFIX}/man/man8
+X	${INSTALL_MAN} ${WRKSRC}/etc/sagan.8	${STAGEDIR}${PREFIX}/man/man8
 X	${INSTALL_PROGRAM} ${WRKSRC}/src/sagan ${STAGEDIR}${PREFIX}/bin
 X	${INSTALL_DATA} ${WRKSRC}/etc/sagan.conf ${STAGEDIR}${ETCDIR}/sagan.conf-sample
 X	${MKDIR} ${STAGEDIR}${LOGS_DIR}
