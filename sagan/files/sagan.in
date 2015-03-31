@@ -21,7 +21,7 @@ name="sagan"
 rcvar=sagan_enable
 extra_commands=reload
 
-command="/usr/local/sbin/sagan"
+command="/usr/local/bin/sagan"
 
 load_rc_config $name
 
