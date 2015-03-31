@@ -2,3 +2,5 @@ bin/sagan
 etc/sagan/sagan.conf-sample
 man/man8/sagan.8.gz
 @dir(root,wheel,750) /var/log/sagan
+@dir(root,wheel,750) /var/run/sagan
+@dir(root,wheel,750) etc/sagan/rules
