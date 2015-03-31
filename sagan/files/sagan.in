@@ -27,7 +27,7 @@ load_rc_config $name
 
 [ -z "$sagan_enable" ]    && sagan_enable="NO"
 [ -z "$sagan_conf" ]      && sagan_conf="/usr/local/etc/sagan.conf"
-[ -z "$sagan_user" ]      && sagan_user="sagan"
+[ -z "$sagan_user" ]      && sagan_user="root"
 [ -z "$sagan_flags" ]     && sagan_flags="-D -u $sagan_user"
                           
 [ -n "$sagan_conf" ]      && sagan_flags="$sagan_flags -f $sagan_conf"
